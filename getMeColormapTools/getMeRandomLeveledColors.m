@@ -1,4 +1,4 @@
-function showSomeColors = getMeLeveledRandomColors(nColor,nStep)
+function showSomeColors = getMeRandomLeveledColors(nColor,nStep)
 % gets you a colormap of nStep x nColor levels, colors are randomized
 
 if nStep == 0

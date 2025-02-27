@@ -2,7 +2,7 @@ function showSomeColors = getMeColors(rgbStart,rgbEnd,n)
 
 % https://www.rapidtables.com/web/color/RGB_Color.html
 
-if n == 0
+if nargin <= 4 || n == 0
     n = 256;
 end
 

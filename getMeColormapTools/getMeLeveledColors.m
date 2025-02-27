@@ -1,5 +1,7 @@
 function showSomeColors = getMeLeveledColors(colorList,nStep)
+% % gets you a colormap of nStep x nColor levels, colors are specified
 % # of total steps = colorList(nColor,3) x nStep
+
 lengthList = length(colorList(:,1)); % number of colors
 thisLevel = zeros(lengthList*nStep,3);
 for level = 1:lengthList
