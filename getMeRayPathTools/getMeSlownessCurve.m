@@ -1,17 +1,16 @@
-load bathyGOM.mat
-wavelengths = 1000*[25:25:400];
+[~,~,ztopo] = getMeTopo(-91.5,-87.5,25.8,27.8);
+[xtopo,ytopo,ztopoS] = getMeSmoothed(20000,-91.5,-87.5,25.8,27.8);
+wavelengths = 1000*[25:25:600];
 
 % copy in file name
 % load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\forward\mayTwentyfirst\25D200KM-89.2E27.36N0.125HdT5day20KMsmooth.mat")
 
 % loop example
-% load('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\threeDts\15D25KM-89.98E27.23N-0.125HdT20day20KMsmooth.mat')
-load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\forward\experimentSE\40D200KM-88.65E26.6N0.125HdT15day20KMsmooth.mat")
-% load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\forward\15D145.3KM-89.2984E26.8477N0.125HdT3day20KMsmooth.mat")
+load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\35D500KM-90.45E26.5N-0.125HdT1day20KMsmooth.mat")
 
 [pathCgx,pathCgy,pathCg] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
 %%
-for q = 1:abs(6/dt_hr):length(pathLon)
+for q = 32 %1:abs(0.125/dt_hr):length(pathLon)
     figure(11)
     % clf
     colormap default
@@ -114,16 +113,16 @@ for q = 1:abs(6/dt_hr):length(pathLon)
     % figure(11)    % dispersion [k,l] curves
     plot(kl,ll,'b.');    % y=ll vs x=kl
     hold on
-    bbbb = quiver(pathK(q),pathL(q),pathCgx(q),pathCgy(q),'k',"LineWidth",3,"AutoScale","off");
-    cccc = quiver(0,0,pathEi(q,2),pathEi(q,3),"LineWidth",3,"AutoScale","off","Color","#ffb300");
-    aaaa = quiver(0,0,pathK(q),pathL(q),"Color","#D95319","LineWidth",3,"MaxHeadSize",3,"AutoScale","off");
+    bbbb = quiver(pathK(q),pathL(q),pathCgx(q),pathCgy(q),"off",'k',"LineWidth",3); % Cg
+    cccc = quiver(0,0,pathEi(q,2),pathEi(q,3),"off","LineWidth",3,"Color","#ffb300"); % topo gradient
+    aaaa = quiver(0,0,pathK(q),pathL(q),"off","Color","r","LineWidth",5,"MaxHeadSize",3); % K
 
     for i = 1:length(wavelengths) %subsample KK0's by factor of 10 to plot K0 circles
         K0=2*pi/wavelengths(i);
         kcirc=K0*cosang;
         lcirc=K0*sinang;
-        plot(kcirc,lcirc,'m-', kcirc,-lcirc,'m-',...
-            -kcirc,lcirc,'m-',-kcirc,-lcirc,'m-')
+        plot(kcirc,lcirc,'m-.', kcirc,-lcirc,'m-.',...
+            -kcirc,lcirc,'m-.',-kcirc,-lcirc,'m-.')
     end
     theta = acosd((pathK(q)*pathEi(q,2)+pathL(q)*pathEi(q,3))/(pathK0(q)*sqrt(pathEi(q,2)^2+pathEi(q,3)^2)));
     text(-18e-5, 8e-5,['theta (^o)= ', num2str(theta,4')])
@@ -131,7 +130,7 @@ for q = 1:abs(6/dt_hr):length(pathLon)
     text(-18e-5, 12e-5, ['h (m)= ', num2str(h,4)])
     % text(-18e-5, 14e-5, ['K0= ', num2str(pathK0(q),4)])
     text(-18e-5, 14e-5, ['Wavelengh (km)= ', num2str(2*pi/1000/pathK0(q),4)])
-    text(-18e-5, 16e-5, ['Wavelength Cicles (km): 25:25:400'])
+    text(-18e-5, 16e-5, ['Wavelength Cicles (km): 25:25:600'])
     legend([aaaa bbbb cccc],"Wavenumber K0","Group Velocity","Bathy. Gradient")
     axis([-Kbox +Kbox -Kbox +Kbox])
     axis square

@@ -1,4 +1,6 @@
-load bathyGOM.mat
+[xtopo,ytopo,ztopoS] = getMeSmoothed(20000,-91.5,-87.5,25.8,27.8);
+
+filePath = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\*.mat');
 
 choice = menu('Select Visualization Mode','Wavelength Mode','Time Span Mode', ...
     'Cg Mode','h Mode','∇h Mode','Period Discrepancy','dh/dt Mode');
@@ -8,7 +10,7 @@ clear colorIndex
 
 
 if choice == 1 % Wavelength
-    hiClim = 250;
+    hiClim = 600;
     cMap = cmocean('thermal');
 elseif choice == 2 % Time span
     hiClim = howManyDaysToSee;
@@ -50,20 +52,19 @@ hold on
 xlabel(ax1,'Longitude E')
 ylabel(ax1,'Latitude N')
 daspect(ax1,[1 1 1])
-ylim(ax1,[26 28])
-xlim(ax1,[-91 -88])
+ylim(ax1,[25.8 27.8])
+xlim(ax1,[-91.5 -87.5])
 hold off
 
 ax2 = axes('Position',axesPosition);
 
 hold on
-filePath = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\forward\experimentSE\SE1\*.mat');
 howManyDrawn = 0;
 for ii = 1:length(filePath)
     fileName = (filePath(ii).name);
     load(fileName)
 
-    if startT ~= 0 && startLAM  ~= 0  && startLat ~= 0 && startLon ~= 0 && dt_hr == 0.125 && days ~= 0
+    if startT ~= 0 && startLAM  ~= 0  && startLat ~= 0 && startLon ~= 0 && dt_hr ~= 0 && days ~= 0
         colorIndex = zeros([length(pathLon) 3]);
         if choice == 1
             colorIndex = (0.002*pi./pathK0);
@@ -113,13 +114,12 @@ scatter(ax2,-90.1, 26,'markeredgecolor','y')
 c = scatter(ax2,[-89.98 -90.5],[27.23 26.75],'markerfacecolor','#fc03c6','markeredgecolor','k');
 
 ax2.Visible = 'off';
-ylim(ax2,[26 28])
-xlim(ax2,[-91 -88])
+ylim(ax2,[25.8 27.8])
+xlim(ax2,[-91.5 -87.5])
 daspect(ax2,[1 1 1])
 colormap(ax2,cMap)
 linkaxes([ax1 ax2]);
 ax2.Visible = 'off';
-
 
 % startMarks = scatter(ax1,pathLon(1),pathLat(1),10,'o','filled','MarkerEdgeColor',"black","MarkerFaceColor","yellow");
 % pathMarks = scatter(ax1,pathLon(everyDayMarks),pathLat(everyDayMarks),10,'o','MarkerEdgeColor',"black");
