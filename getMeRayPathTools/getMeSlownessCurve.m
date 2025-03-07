@@ -2,15 +2,12 @@
 [xtopo,ytopo,ztopoS] = getMeSmoothed(20000,-91.5,-87.5,25.8,27.8);
 wavelengths = 1000*[25:25:600];
 
-% copy in file name
-% load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\forward\mayTwentyfirst\25D200KM-89.2E27.36N0.125HdT5day20KMsmooth.mat")
-
 % loop example
-load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\35D500KM-90.45E26.5N-0.125HdT1day20KMsmooth.mat")
+load()
 
 [pathCgx,pathCgy,pathCg] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
 %%
-for q = 32 %1:abs(0.125/dt_hr):length(pathLon)
+for q = 1:abs(1/dt_hr):length(pathLon)
     figure(11)
     % clf
     colormap default
