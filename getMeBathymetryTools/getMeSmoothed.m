@@ -19,6 +19,15 @@ end
 for x = 1:length(xtopo)
     smoothedProduct(x,:) = filtfilt(b,a,smoothedZonal(x,:));
 end
+
+% y then x
+% [b,a] = butter(4,2*avgdy/smoothDistance);
+% for x = 1:length(xtopo)
+%     smoothedMeridional(x,:) = filtfilt(b,a,ztopo(x,:));
+% end
+% for y = 1:length(ytopo)
+%     smoothedProduct(:,y) = filtfilt(b,a,smoothedMeridional(:,y));
+% end
 %%
 % for y = 1:length(ytopo)
 %     [b,a] = butter(4,2*dx(y)/smoothDistance);
