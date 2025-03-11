@@ -1,13 +1,13 @@
 [~,~,ztopo] = getMeTopo(-91.5,-87.5,25.8,27.8);
-[xtopo,ytopo,ztopoS] = getMeSmoothed(20000,-91.5,-87.5,25.8,27.8);
+[xtopo,ytopo,ztopoS] = getMeSmoothed(30000,-91.5,-87.5,25.8,27.8);
 wavelengths = 1000*[25:25:600];
 
 % loop example
 load()
 
-[pathCgx,pathCgy,pathCg] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
+[pathCg,pathCgx,pathCgy] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
 %%
-for q = 1:abs(1/dt_hr):length(pathLon)
+for q = 45 %1:abs(1/dt_hr):length(pathLon)
     figure(11)
     % clf
     colormap default

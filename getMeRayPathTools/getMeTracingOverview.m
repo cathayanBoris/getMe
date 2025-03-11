@@ -1,4 +1,4 @@
-[xtopo,ytopo,ztopoS] = getMeSmoothed(20000,-91.5,-87.5,25.8,27.8);
+[xtopo,ytopo,ztopoS] = getMeSmoothed(30000,-91.5,-87.5,25.8,27.8);
 
 filePath = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\*.mat');
 
