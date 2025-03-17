@@ -7,7 +7,7 @@ load()
 
 [pathCg,pathCgx,pathCgy] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
 %%
-for q = 45 %1:abs(1/dt_hr):length(pathLon)
+for q = 1:abs(1/dt_hr):length(pathLon)
     figure(11)
     % clf
     colormap default
