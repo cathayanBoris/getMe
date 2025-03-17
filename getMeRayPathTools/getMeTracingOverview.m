@@ -1,9 +1,10 @@
+%% need cmocean to run
 [xtopo,ytopo,ztopoS] = getMeSmoothed(30000,-91.5,-87.5,25.8,27.8);
 
 filePath = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\*.mat');
 
 choice = menu('Select Visualization Mode','Wavelength Mode','Time Span Mode', ...
-    'Cg Mode','h Mode','∇h Mode','Period Discrepancy','dh/dt Mode');
+    'Cg Mode','h Mode','∇h Mode','Period T Mode','Period T Discrepancy','dh/dt Mode');
 lowClim = 0;
 howManyDaysToSee = 15;
 clear colorIndex
@@ -14,20 +15,23 @@ if choice == 1 % Wavelength
     cMap = cmocean('thermal');
 elseif choice == 2 % Time span
     hiClim = howManyDaysToSee;
-    cMap = prism(howManyDaysToSee);
+    cMap = prism(hiClim);
 elseif choice == 3 % Cg
     hiClim = 0.5;
     cMap = hot;
 elseif choice == 4 % Depth
-    hiClim = -1000
+    hiClim = -1000;
     lowClim = -3000;
     cMap = flipud(cmocean('dense'));
 elseif choice == 5 % ∇h
     hiClim = 0.05;
     cMap = cmocean('algae');
-elseif choice == 6 % T reconstruction
+elseif choice == 6
+    hiClim = 40;
+    cMap = spring(hiClim);
+elseif choice == 7 % T reconstruction
     cMap = cmocean('diff',20);
-elseif choice == 7 % dh/dt
+elseif choice == 8 % dh/dt
     hiClim = 0;
     lowClim = -15;
     cMap = cmocean('thermal');
@@ -59,12 +63,12 @@ hold off
 ax2 = axes('Position',axesPosition);
 
 hold on
-howManyDrawn = 0;
+howManyDrawn = 0
 for ii = 1:length(filePath)
     fileName = (filePath(ii).name);
     load(fileName)
 
-    if startT ~= 0 && startLAM  ~= 0  && startLat ~= 0 && startLon ~= 0 && dt_hr ~= 0 && days ~= 0
+    if startT ~= 0 && startLAM ~= 0  && startLat ~= 0 && startLon > -90 && dt_hr ~= 0 && days ~= 0
         colorIndex = zeros([length(pathLon) 3]);
         if choice == 1
             colorIndex = (0.002*pi./pathK0);
@@ -77,11 +81,13 @@ for ii = 1:length(filePath)
         elseif choice == 5
             colorIndex = sqrt(pathEi(:,2).^2+pathEi(:,3).^2);
         elseif choice == 6
+            colorIndex = startT*ones(size(pathLon));
+        elseif choice == 7
             [~,~,~,~,reSig] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
             lowClim = -10;
             hiClim = 10;
             colorIndex = 2*pi./reSig./86400 - startT;
-        elseif choice == 7
+        elseif choice == 8
             colorIndex = [diff(pathEi(:,1)); 0] / dt_hr;
         end
         cb2 = colorbar(ax2,'east','Color','k');
@@ -96,12 +102,14 @@ for ii = 1:length(filePath)
             cb2.Label.String = "Depth z=-h (m)";
         elseif choice == 5
             cb2.Label.String = "∇h (m/m)";
-        elseif choice == 6
-            cb2.Label.String = "Simulation period discrepancy (day)";
+            elseif choice == 6
+            cb2.Label.String = "Wave Period T (day)";
         elseif choice == 7
+            cb2.Label.String = "Simulation period discrepancy (day)";
+        elseif choice == 8
             cb2.Label.String = "dh/dt (m/h)";
         end
-        pathScatter = scatter(ax2,pathLon,pathLat,1,colorIndex);
+        pathScatter = scatter(ax2,pathLon,pathLat,15,colorIndex);
         howManyDrawn = howManyDrawn + 1
     else
     end
