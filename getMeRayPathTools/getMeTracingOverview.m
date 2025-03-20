@@ -75,7 +75,7 @@ for ii = 1:length(filePath)
         elseif choice == 2
             colorIndex = ((timeHr/24));
         elseif choice == 3
-            [~,~,colorIndex,~,~] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
+            [colorIndex,~,~,~,~] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
         elseif choice == 4
             colorIndex = -pathEi(:,1);
         elseif choice == 5
