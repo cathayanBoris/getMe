@@ -20,11 +20,6 @@ if size(y) ~= size(dependentVariable)
     y = y.';
 end
 
-
-whos x
-whos y
-whos dependentVariable
-
 z = zeros(size(x));
 surface([x;x],[y;y],[z;z],[dependentVariable;dependentVariable],'FaceColor','none','EdgeColor','interp','LineWidth',lineWidth);
 end
