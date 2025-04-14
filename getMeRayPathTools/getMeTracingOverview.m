@@ -1,7 +1,7 @@
 %% need cmocean to run
 [xtopo,ytopo,ztopoS] = getMeSmoothed(30000,-91.5,-87.5,25.8,27.8);
 
-filePath = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\*.mat');
+filePath = dir();
 
 choice = menu('Select Visualization Mode','Wavelength Mode','Time Span Mode', ...
     'Cg Mode','h Mode','∇h Mode','Period T Mode','Period T Discrepancy','dh/dt Mode');
@@ -68,7 +68,7 @@ for ii = 1:length(filePath)
     fileName = (filePath(ii).name);
     load(fileName)
 
-    if startT ~= 0 && startLAM ~= 0  && startLat ~= 0 && startLon > -90 && dt_hr ~= 0 && days ~= 0
+    if startT ~= 0 && startLAM ~= 0  && startLat ~= 0 && startLon ~= 0 && dt_hr ~= 0 && days ~= 0
         colorIndex = zeros([length(pathLon) 3]);
         if choice == 1
             colorIndex = (0.002*pi./pathK0);
@@ -114,12 +114,12 @@ for ii = 1:length(filePath)
     else
     end
 end
-lonListP = [-89.2 -89.2 -89.165 -89.2 -89.35 -89.5 -89.65 -89.8 -89.98 -90.5];
-latListP = [27.502 27.361 27.22 27.08 26.902 26.719 26.542 26.36 27.23 26.75];
-a = scatter(ax2,lonListP(2*(1:4)-1), latListP(2*(1:4)-1),'markeredgecolor','k','markerfacecolor',[1 0.5 0]);
-b = scatter(ax2,lonListP(2*(1:4)), latListP(2*(1:4)),'markeredgecolor','k','markerfacecolor','y');
-scatter(ax2,-90.1, 26,'markeredgecolor','y')
-c = scatter(ax2,[-89.98 -90.5],[27.23 26.75],'markerfacecolor','#fc03c6','markeredgecolor','k');
+% lonListP = [-89.2 -89.2 -89.165 -89.2 -89.35 -89.5 -89.65 -89.8 -89.98 -90.5];
+% latListP = [27.502 27.361 27.22 27.08 26.902 26.719 26.542 26.36 27.23 26.75];
+% a = scatter(ax2,lonListP(2*(1:4)-1), latListP(2*(1:4)-1),'markeredgecolor','k','markerfacecolor',[1 0.5 0]);
+% b = scatter(ax2,lonListP(2*(1:4)), latListP(2*(1:4)),'markeredgecolor','k','markerfacecolor','y');
+% scatter(ax2,-90.1, 26,'markeredgecolor','y')
+% c = scatter(ax2,[-89.98 -90.5],[27.23 26.75],'markerfacecolor','#fc03c6','markeredgecolor','k');
 
 ax2.Visible = 'off';
 ylim(ax2,[25.8 27.8])
