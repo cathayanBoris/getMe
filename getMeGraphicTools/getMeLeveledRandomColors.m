@@ -18,6 +18,11 @@ for level = 1:nColor
     end
 
 end
-showSomeColors = ((round(thisLevel)/255));
+
+colors = ((round(thisLevel)/255));
+colors(colors >= 254/255) = 254/255;
+colors(colors <= 1/255) = 1/255;
+
+showSomeColors = colors; 
 % showSomeColors = colormap((round(thisLevel)/255));
 end

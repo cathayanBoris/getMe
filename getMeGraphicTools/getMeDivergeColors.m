@@ -14,6 +14,10 @@ elseif (-1)^n > 0 % even
     colors(1:n/2,:) = 1/255 *[linspace(rgbStart(1), rgbEnd(1), n/2)', linspace(rgbStart(2), rgbEnd(2), n/2)', linspace(rgbStart(3), rgbEnd(3), n/2)'];
     colors(n/2+1:n,:) = 1/255 *[linspace(rgbStart2(1), rgbEnd2(1), n/2)', linspace(rgbStart2(2), rgbEnd2(2), n/2)', linspace(rgbStart2(3), rgbEnd2(3), n/2)'];
 end
+
+colors(colors >= 254/255) = 254/255;
+colors(colors <= 1/255) = 1/255;
+
 showSomeColors = colors;
 % showSomeColors = colormap(colors);
 
