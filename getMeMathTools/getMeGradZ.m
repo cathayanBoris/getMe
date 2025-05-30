@@ -1,6 +1,6 @@
-function [hxt2,hyt,hgradient2,dx2,dy] = getMeGradZ(xtopo,ytopo,ztopo)
+function [hxt,hyt,hgradient,dx,dy] = getMeGradZ(xtopo,ytopo,ztopo)
 ztopo = ztopo';
-[n m] = size(ztopo);
+% [n m] = size(ztopo);
 
 % if sum(diff(diff(xtopo)))<=0
 %     fprintf(fid,'even lon grid %.3f\n',xtopo(2)-xtopo(1));
@@ -16,9 +16,9 @@ alat = ytopo;
 dlon = xtopo(2)-xtopo(1);
 rlat = alat * pi/180;
 p = 111415.13 * cos(rlat) - 94.55 * cos(3 * rlat);
-dx2 = dlon .* p;
-%give dx2 right dimentions...
-dx2 = repmat(dx2,1,length(xtopo));
+dx = dlon .* p;
+% give dx right dimentions...
+% dx = repmat(dx,1,length(xtopo));
 rlat = mean(ytopo) * pi/180;
 m = 111132.09 * ones(size(rlat)) - ...
     566.05 * cos(2 * rlat) + 1.2 * cos(4 * rlat);
@@ -29,14 +29,14 @@ dy = -(ytopo(1)-ytopo(2)) .* m ;
 % size(hy)
 % size(dy)
 
-hxt2 = hx./dx2;
+hxt = hx./dx;
 hyt = hy./dy; %stays same!
-hgradient2 = sqrt(hxt2.*hxt2 + hyt.*hyt);
+hgradient = sqrt(hxt.*hxt + hyt.*hyt);
 % size(hgradient2)
-hgradient2 = hgradient2';
-dx2 = dx2(:,1);
-dy = abs(dy.* ones(length(hgradient2(:,1)),1));
-hxt2 = hxt2';
+hgradient = hgradient';
+dx = dx(:,1);
+dy = abs(dy.* ones(length(hgradient(:,1)),1));
+hxt = hxt';
 hyt = hyt';
 
 % ibad = find(ztopo>0); % nan land out.

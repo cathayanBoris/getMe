@@ -5,7 +5,7 @@ filePath = dir();
 
 choice = menu('Select Visualization Mode','Wavelength Mode','Time Span Mode', ...
     'Cg Mode','h Mode','∇h Mode','Period T Mode','Period T Discrepancy','dh/dt Mode');
-lowClim = 0;
+loClim = 0;
 howManyDaysToSee = 15;
 clear colorIndex
 
@@ -21,19 +21,21 @@ elseif choice == 3 % Cg
     cMap = hot;
 elseif choice == 4 % Depth
     hiClim = -1000;
-    lowClim = -3000;
+    loClim = -3000;
     cMap = flipud(cmocean('dense'));
 elseif choice == 5 % ∇h
     hiClim = 0.05;
     cMap = cmocean('algae');
 elseif choice == 6
-    hiClim = 40;
+    hiClim = 40; % T
     cMap = spring(hiClim);
 elseif choice == 7 % T reconstruction
+    loClim = -10;
+    hiClim = 10;
     cMap = cmocean('diff',20);
 elseif choice == 8 % dh/dt
     hiClim = 0;
-    lowClim = -15;
+    loClim = -15;
     cMap = cmocean('thermal');
 end
 %%
@@ -84,14 +86,12 @@ for ii = 1:length(filePath)
             colorIndex = startT*ones(size(pathLon));
         elseif choice == 7
             [~,~,~,~,reSig] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
-            lowClim = -10;
-            hiClim = 10;
             colorIndex = 2*pi./reSig./86400 - startT;
         elseif choice == 8
             colorIndex = [diff(pathEi(:,1)); 0] / dt_hr;
         end
         cb2 = colorbar(ax2,'east','Color','k');
-        clim(ax2,[lowClim hiClim])
+        clim(ax2,[loClim hiClim])
         if choice == 1
             cb2.Label.String = "Wavelength (km)";
         elseif choice == 2
@@ -102,7 +102,7 @@ for ii = 1:length(filePath)
             cb2.Label.String = "Depth z=-h (m)";
         elseif choice == 5
             cb2.Label.String = "∇h (m/m)";
-            elseif choice == 6
+        elseif choice == 6
             cb2.Label.String = "Wave Period T (day)";
         elseif choice == 7
             cb2.Label.String = "Simulation period discrepancy (day)";
