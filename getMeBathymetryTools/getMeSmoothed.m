@@ -1,8 +1,8 @@
-function [xtopo,ytopo,smoothedProduct] = getMeSmoothed(smoothDistance,L,R,D,U)
+function [xtopo,ytopo,smoothedProduct] = getMeSmoothed(smoothDistanceInM,L,R,D,U)
 
 [xtopo,ytopo,ztopo] = getMeTopo(L,R,D,U);
 
-if smoothDistance == 0
+if smoothDistanceInM == 0 || isempty(smoothDistanceInM)
     smoothedProduct = ztopo;
     return
 end
@@ -11,11 +11,11 @@ end
 avgdx = mean(dx,'omitnan');
 avgdy = mean(dy,'omitnan');
 %x then y
-[b,a] = butter(4,2*avgdx/smoothDistance);
+[b,a] = butter(4,2*avgdx/smoothDistanceInM);
 for y = 1:length(ytopo)
     smoothedZonal(:,y) = filtfilt(b,a,ztopo(:,y));
 end
-[b,a] = butter(4,2*avgdy/smoothDistance);
+[b,a] = butter(4,2*avgdy/smoothDistanceInM);
 for x = 1:length(xtopo)
     smoothedProduct(x,:) = filtfilt(b,a,smoothedZonal(x,:));
 end
