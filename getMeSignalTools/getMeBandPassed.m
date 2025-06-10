@@ -1,10 +1,10 @@
-function [outputSignal]=getMeBandPassed(inputSignal,order,period1,period2,samplingPeriod)
+function [outputSignal]=getMeBandPassed(inputSignal,order,periods,samplingPeriod,linearRestoration)
 %
 % function [out]=butterfilt_bandpass(in,order,filtThi,filtTlo,sampT);
 %
-% This function is designed to do lowpass filtering of any vector of 
-% data.  It uses a  Butterworth filter and does the 
-% filtering twice, once forward and once in the reverse direction.  
+% This function is designed to do lowpass filtering of any vector of
+% data.  It uses a  Butterworth filter and does the
+% filtering twice, once forward and once in the reverse direction.
 %
 % INPUTS:
 %        in    -- the data vector
@@ -16,10 +16,13 @@ function [outputSignal]=getMeBandPassed(inputSignal,order,period1,period2,sampli
 %  NOTE:  filtT and sampT must be entered in the same units!!!!!
 %
 
+if nargin <= 4 || ~exist('linearRestoration','var')
+    linearRestoration = 0;
+end
 
 %
-% First remove a ramp so that the first and last points are zero.  
-% This minimizes the filter transients at the ends of the record.  
+% First remove a ramp so that the first and last points are zero.
+% This minimizes the filter transients at the ends of the record.
 %
 
 P=polyfit([1 length(inputSignal)],[inputSignal(1) inputSignal(end)],1);
@@ -31,23 +34,23 @@ end
 inputSignal=inputSignal-lineartrend;
 
 %
-% Second, create the Butterworth filter.  
+% Second, create the Butterworth filter.
 %
 
-sorted = sort([period1 period2]);
+sorted = sort(periods);
 shortPeriod = sorted(1);
 longPeriod = sorted(2);
 
 Wnlo=(2/shortPeriod)*samplingPeriod;
 Wnhi=(2/longPeriod)*samplingPeriod;
-Wn=[Wnhi Wnlo]; 
+Wn=[Wnhi Wnlo];
 [b,a]=butter(order,Wn);
 
 %
-% Third, filter the data both forward and reverse.  
+% Third, filter the data both forward and reverse.
 %
 if ~isempty(find(isnan(inputSignal),1))
- error('Bruh there are NaNs in this data set')
+    error('Bruh there are NaNs in this data set')
 end
 
 outputSignal=filtfilt(b,a,inputSignal);
@@ -56,6 +59,16 @@ outputSignal=filtfilt(b,a,inputSignal);
 %
 % Finally return the linear trend removed earlier.
 %
-outputSignal=outputSignal+lineartrend;
+if  isa(linearRestoration,'string')
+    linearRestoration = convertStringsToChars(linearRestoration);
+end
+if  isa(linearRestoration,'char')
+    if  linearRestoration(2) == 'e' || linearRestoration(2) == 'n'
+        linearRestoration  = 1;
+    end
+end
+if linearRestoration
+    outputSignal=outputSignal+lineartrend;
+end
 %
 %

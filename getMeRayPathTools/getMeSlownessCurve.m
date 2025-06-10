@@ -1,5 +1,5 @@
 % loop example
-load()
+load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\")
 
 [~,~,ztopo] = getMeTopo(-91.5,-87.5,25.8,27.8);
 [xtopo,ytopo,ztopoS] = getMeSmoothed(smoothing*1000,-91.5,-87.5,25.8,27.8);
@@ -128,19 +128,17 @@ for q = 1:abs(1/dt_hr):length(pathLon)
     aaaa = quiver(0,0,pathK(q),pathL(q),"off","Color","r","LineWidth",5,"MaxHeadSize",3); % K
     
     wavelengths = [wavelengths 2*pi/abs(pathK(q)+1i*pathL(q))];
-    for i = 1:length(wavelengths) %subsample KK0's by factor of 10 to plot K0 circles
+    for i = length(wavelengths) %subsample KK0's by factor of 10 to plot K0 circles
         K0=2*pi/wavelengths(i);
         kcirc=K0*cosang;
         lcirc=K0*sinang;
-        if i == length(wavelengths)
-            getMeColorfulPlot(kcirc,lcirc,0.002*pi./abs(kcirc+1i*lcirc),1,'--',1);
-            getMeColorfulPlot(-kcirc,lcirc,0.002*pi./abs(kcirc+1i*lcirc),1,'--',1);
-            getMeColorfulPlot(kcirc,-lcirc,0.002*pi./abs(kcirc+1i*lcirc),1,'--',1);
-            cirkle = getMeColorfulPlot(-kcirc,-lcirc,0.002*pi./abs(kcirc+1i*lcirc),1,'--',1);
-        else
-        % circle = plot(kcirc,lcirc,'-.', kcirc,-lcirc,'-.',...
-        %     -kcirc,lcirc,'-.',-kcirc,-lcirc,'-.','Color',[1 0 1 0.3]);
-        end
+        circleColor = 0.002*pi./abs(kcirc+1i*lcirc);
+
+            % getMeColorfulPlot(kcirc,lcirc,circleColor,1,'--',1);
+            % getMeColorfulPlot(-kcirc,lcirc,circleColor,1,'--',1);
+            % getMeColorfulPlot(kcirc,-lcirc,circleColor,1,'--',1);
+            % cirkle = getMeColorfulPlot(-kcirc,-lcirc,circleColor,1,'--',1);
+            cirkle = getMeCirclePlot(0,0,K0,1,'--',1,circleColor);
     end
     theta = acosd((pathK(q)*pathEi(q,2)+pathL(q)*pathEi(q,3))/(pathK0(q)*sqrt(pathEi(q,2)^2+pathEi(q,3)^2)));
     % text(-18e-5, 8e-5,['Cross Product Angle (^o)= ', num2str(theta,4')])
@@ -148,7 +146,7 @@ for q = 1:abs(1/dt_hr):length(pathLon)
     % text(-18e-5, 12e-5, ['h (m)= ', num2str(h,4)])
     text(mean(kcirc), -mean(kcirc), ['Wavelength ', num2str(2*pi/1000/pathK0(q),4) 'km'],"VerticalAlignment","top","HorizontalAlignment","left")
     % text(-18e-5, 16e-5, ['Wavelength Circles (km): 25:25:600'])
-    legend([zzzz aaaa bbbb cccc cirkle],"Slowness Curve", ... 
+    legend([zzzz aaaa bbbb cccc cirkle(1)],"Slowness Curve", ... 
         ' Wavenumber K',"Group Velocity","Topo. Gradient","K Isocontour")
     axis([-Kbox +Kbox -Kbox +Kbox])
     cbar = colorbar(gca,"south"); xlabel(cbar,'Wavelength (km)')

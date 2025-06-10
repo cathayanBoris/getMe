@@ -1,5 +1,9 @@
 function [hxt,hyt,hgradient,dx,dy] = getMeGradZ(xtopo,ytopo,ztopo)
-ztopo = ztopo';
+[m,n] = size(ztopo);
+if m == length(xtopo) || n == length(ytopo)
+    ztopo = ztopo';
+end
+
 % [n m] = size(ztopo);
 
 % if sum(diff(diff(xtopo)))<=0

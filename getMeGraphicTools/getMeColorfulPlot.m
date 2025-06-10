@@ -4,7 +4,7 @@ function [colorfulPlot] = getMeColorfulPlot(x,y,dependentVariable,lineWidth,line
 % quantity depending on axis clim
 
 % default linewidth 0.5
-if nargin <= 3 || lineWidth <= 0
+if nargin <= 3 || lineWidth <= 0 || isempty(lineWidth)
     lineWidth = 0.5;
 end
 
