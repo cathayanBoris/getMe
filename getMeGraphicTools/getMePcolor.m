@@ -43,6 +43,5 @@ Yshifted = Yextended-dY;
 
 output = pcolor(gca,Xshifted,Yshifted,Cexpanded);
 
-X
 % xticks(X(1:end-1)); yticks(Y(1:end-1));
 end
