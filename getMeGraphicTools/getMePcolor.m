@@ -20,8 +20,11 @@ if isvector(X) || isvector(Y)
         Y = Y.';
     end
 
-    X = [X 2*X(end)-X(end-1)];
-    Y = [Y 2*Y(end)-Y(end-1)];
+    Xextended = [X 2*X(end)-X(end-1)];
+    Yextended = [Y 2*Y(end)-Y(end-1)];
+
+else % is a matrix
+    error(['X and Y need to be vectors.']);
 end
 
 
@@ -31,14 +34,15 @@ Cexpanded(q+1,1:r) =C(q,1:r);
 Cexpanded(1:q,r+1) = C(1:q,r);
 Cexpanded(q+1,r+1) = C(q,r);
 
-dX = diff(X); dX = [dX dX(end)]/2;
-dY = diff(Y); dY = [dY dY(end)]/2;
+dX = diff(Xextended); dX = [dX dX(end)]/2;
+dY = diff(Yextended); dY = [dY dY(end)]/2;
 
 
-Xshifted = X-dX;
-Yshifted = Y-dY;
+Xshifted = Xextended-dX;
+Yshifted = Yextended-dY;
 
 output = pcolor(gca,Xshifted,Yshifted,Cexpanded);
-shading flat
-xticks(X(1:end)); yticks(Y(1:end));
+
+X
+% xticks(X(1:end-1)); yticks(Y(1:end-1));
 end
