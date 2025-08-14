@@ -1,4 +1,4 @@
-function [outputSignal]=getMeBandPassed(inputSignal,order,periods,samplingPeriod,linearRestoration)
+function [outputSignal]=getMeBandPassed(inputSignal,order,periodBand,samplingPeriod,linearRestoration)
 %
 % function [out]=butterfilt_bandpass(in,order,filtThi,filtTlo,sampT);
 %
@@ -37,7 +37,7 @@ inputSignal=inputSignal-lineartrend;
 % Second, create the Butterworth filter.
 %
 
-sorted = sort(periods);
+sorted = sort(periodBand);
 shortPeriod = sorted(1);
 longPeriod = sorted(2);
 
@@ -63,7 +63,7 @@ if  isa(linearRestoration,'string')
     linearRestoration = convertStringsToChars(linearRestoration);
 end
 if  isa(linearRestoration,'char')
-    if  linearRestoration(2) == 'e' || linearRestoration(2) == 'n'
+    if  linearRestoration(2) == 'e' || linearRestoration(2) == 'n' % 'yes' or 'on'
         linearRestoration  = 1;
     end
 end

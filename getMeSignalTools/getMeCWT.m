@@ -36,17 +36,21 @@ else
 end
 
 subplot(n,1,2)
-pcolor(timeInDays,(1./f)/86400,abs(wt1))
+% pcolor(timeInDays,(1./f)/86400,abs(wt1))
+getMePcolor(timeInDays,(1./f)/86400,abs(wt1));
 hold on
-plot(timeInDays,1./coi/86400,'k--','linewidth',2);
-area(timeInDays,1./coi/86400,1./min(f)/86400,'EdgeColor','none','FaceColor',[1 1 1]*0.5,'FaceAlpha',0.5)
+% plot(timeInDays,1./coi/86400,'k--','linewidth',2);
+yL = get(gca,'YLim');
+area(timeInDays,1./coi/86400,1./min(f)/86400,'EdgeColor','k','lineWidth',2,'LineStyle','--','FaceColor',[1 1 1]*0.5,'FaceAlpha',0.5)
 set(gca, 'YScale', 'log')
 xlim([min(timeInDays) max(timeInDays)])
-if existLimit
-    ylim(sort(periodLimitsInDays,'ascend'))
-else
-    ylim([(1./max(f))/86400 (1./min(f))/86400])
-end
+% if existLimit
+%     tL = sort(periodLimitsInDays,'ascend');
+%     ylim([(1./max(f))/86400 (1./min(f))/86400])
+% else
+%     ylim([(1./max(f))/86400 (1./min(f))/86400])
+% end
+ylim([(1./max(f))/86400 (1./min(f))/86400])
 shading flat
 yline([5:5:50 60:10:100],'LineStyle',':','Color',[1 1 1]*0.4,'LineWidth',1)
 yline([1 3 10 20 50 100 250 500],'LineStyle','-','Color',[1 1 1]*0.4,'LineWidth',2)
@@ -68,17 +72,19 @@ if n == 3
         [wt2,~,~]=cwt(v,'morse',1/(dt*86400));
     end
     subplot(n,1,3)
-    pcolor(timeInDays,(1./f)/86400,abs(wt2))
+    % pcolor(timeInDays,(1./f)/86400,abs(wt2))
+    getMePcolor(timeInDays,(1./f)/86400,abs(wt2));
     hold on
-    plot(timeInDays,1./coi/86400,'k--','linewidth',2);
-    area(timeInDays,1./coi/86400,1./min(f)/86400,'EdgeColor','none','FaceColor',[1 1 1]*0.5,'FaceAlpha',0.5)
+    % plot(timeInDays,1./coi/86400,'k--','linewidth',2);
+    area(timeInDays,1./coi/86400,1./min(f)/86400,'EdgeColor','k','lineWidth',2,'LineStyle','--','FaceColor',[1 1 1]*0.5,'FaceAlpha',0.5)
     set(gca, 'YScale', 'log')
     xlim([min(timeInDays) max(timeInDays)])
-    if existLimit
-        ylim(sort(periodLimitsInDays,'ascend'))
-    else
-        ylim([(1./max(f))/86400 (1./min(f))/86400])
-    end
+    % if existLimit
+    %     ylim(sort(periodLimitsInDays,'ascend'))
+    % else
+    %     ylim([(1./max(f))/86400 (1./min(f))/86400])
+    % end
+    ylim([(1./max(f))/86400 (1./min(f))/86400])
     shading flat
     yline([5:5:50],'LineStyle',':','Color',[1 1 1]*0.4,'LineWidth',1)
     yline([1 3 10 20 50 100 250 500],'LineStyle','-','Color',[1 1 1]*0.4,'LineWidth',2)

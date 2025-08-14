@@ -1,8 +1,14 @@
 % loop example
-load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\")
+load("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\forward\experimentSE\SE7\13D100KM-89.8E27.2N0.125HdT5day30KMsmooth.mat")
 
-[~,~,ztopo] = getMeTopo(-91.5,-87.5,25.8,27.8);
-[xtopo,ytopo,ztopoS] = getMeSmoothed(smoothing*1000,-91.5,-87.5,25.8,27.8);
+smoothKM = smoothing;
+if ~exist('hg','var') || smoothingParameterInM ~= smoothKM*1000
+    [xtopo,ytopo,ztopo] = getMeTopo(-92,-87,25,29);
+    smoothingParameterInM = smoothKM*1000;
+    [~,~,ztopoS] = getMeSmoothed(smoothingParameterInM,-92,-87,25,29);
+    [hx,hy,hg] = getMeGradZ(xtopo,ytopo,-ztopoS);
+end
+
 
 [pathCg,pathCgx,pathCgy] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
 %%

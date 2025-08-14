@@ -21,5 +21,5 @@ Cgx = (pathHy./Kxgh - (pathK+pathBeta/(2*sig))./(pathKb.^2).*(1+pathMju.*pathH.*
 Cgy = (-pathHx./Kxgh - (pathL)./(pathKb.^2).*(1+pathMju.*pathH.*TTT)).*sig;
 Cg = sqrt(Cgx.^2 + Cgy.^2);
 B = 1./pathMju; % bottom trapping?
-reSig = pathNB .* Kxgh ./ pathKb ./Tz;
+reSig = pathNB.*Kxgh ./ pathKb ./Tz;
 end

@@ -24,6 +24,7 @@ u100a = u100 - nanmean(u100,3); v100a = v100 - nanmean(v100,3);
 Ua = 1/3 * (u100a + u300a + u500a);
 Va = 1/3 * (v100a + v300a + v500a);
 EKE = 1/6 * ((abs(u500a + 1i.*v500a)).^2 + (abs(u300a + 1i.*v300a)).^2 + (abs(u100a + 1i.*v100a)).^2);
+
 % EKE(Ua < 0) = -EKE(Ua < 0);
 
 % EPE calculation

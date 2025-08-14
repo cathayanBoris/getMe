@@ -1,116 +1,183 @@
 %% need cmocean to run
-[xtopo,ytopo,ztopoS] = getMeSmoothed(30000,-91.5,-87.5,25.8,27.8);
 
-filePath = dir("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\");
-
-choice = menu('Select Visualization Mode','Wavelength Mode','Time Span Mode', ...
-    'Cg Mode','h Mode','∇h Mode','Period T Mode','Period T Discrepancy','dh/dt Mode');
+choice = menu('Select Visualization Mode','Wavelength \lambda Mode','Time Span Mode', ...
+    'Cg Mode','h Mode','∇h Mode','Period T Mode','Period T Discrepancy','dh/dt Mode', ...
+    '%L Mode','Lx Mode','Ly Mode','KXgH Mode','Angle Mode');
 loClim = 0;
 howManyDaysToSee = 15;
 clear colorIndex
 
-
-if choice == 1 % Wavelength
-    hiClim = 600;
-    cMap = cmocean('thermal');
-elseif choice == 2 % Time span
-    hiClim = howManyDaysToSee;
-    cMap = prism(hiClim);
-elseif choice == 3 % Cg
-    hiClim = 0.5;
-    cMap = hot;
-elseif choice == 4 % Depth
-    hiClim = -1000;
-    loClim = -3000;
-    cMap = flipud(cmocean('dense'));
-elseif choice == 5 % ∇h
-    hiClim = 0.05;
-    cMap = cmocean('algae');
-elseif choice == 6
-    hiClim = 40; % T
-    cMap = spring(hiClim);
-elseif choice == 7 % T reconstruction
-    loClim = -10;
-    hiClim = 10;
-    cMap = cmocean('diff',20);
-elseif choice == 8 % dh/dt
-    hiClim = 0;
-    loClim = -15;
-    cMap = cmocean('thermal');
+switch choice
+    case 1 % Wavelength
+        hiClim = 300;
+        cMap = cmocean('thermal');
+    case 2 % Time span
+        hiClim = howManyDaysToSee;
+        cMap = prism(hiClim);
+    case 3 % Cg
+        hiClim = 0.5;
+        cMap = hot;
+    case 4 % Depth
+        hiClim = -1000;
+        loClim = -3000;
+        cMap = flipud(cmocean('dense'));
+    case 5 % ∇h
+        hiClim = 0.05;
+        cMap = cmocean('algae');
+    case 6 % T
+        loClim = 8;
+        hiClim = 30;
+        cMap = turbo(hiClim-loClim);
+    case 7 % T reconstruction
+        loClim = -10;
+        hiClim = -loClim;;
+        % cMap = cmocean('diff',20);
+        cMap = getMeDivergeColors([0 0 255],[235 235 255],[255 235 235],[255 0 0],10);
+    case 8 % dh/dt
+        hiClim = 10;
+        hiClim = -loClim;
+        cMap = turbo(hiClim-loClim);
+    case 9 % %K
+        loClim = 0.5;
+        hiClim = 2;
+        cMap = turbo;
+    case 10 % Lx
+        loClim = -300;
+        hiClim = -loClim;
+        cMap = getMeDivergeColors([0 0 200],[255 255 255],[255 255 255],[200 0 0]);
+    case 11 % Ly
+        loClim = -300;
+        hiClim = -loClim;
+        cMap = getMeDivergeColors([0 150 0],[255 255 255],[255 255 255],[250 130 0]);
+    case 12 % KXgH
+        loClim = -1e-6;
+        hiClim = -loClim;
+        cMap = turbo;
+    case 13 % Angle
+        hiClim = pi/2;
+        cMap = turbo;
 end
+
+smoothKM = 30;
+if ~exist('hg','var') || smoothingParameterInM ~= smoothKM*1000
+    [xtopo,ytopo,ztopo] = getMeTopo(-92,-87,25,29);
+    smoothingParameterInM = smoothKM*1000;
+    [~,~,ztopoS] = getMeSmoothed(smoothingParameterInM,-92,-87,25,29);
+    [hx,hy,hg] = getMeGradZ(xtopo,ytopo,-ztopoS);
+end
+
+
 %%
+filePath = dir("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\experimentSW\SW1\*.mat");
+
+
 figure(10)
 clf
 mapLims = [-91.4 -87.6 25.9 27.7];
 axesPosition = get(gca,'Position');
 set(gca,'visible','off')
-ax1 = axes('Position',axesPosition);
-v = -3500:100:0;
-labelColor = [1 1 1]*0.25;
-[C,h] = contourf(ax1,xtopo,ytopo,ztopoS',v,'color',labelColor,'ShowText','off',"FaceAlpha",0.5,"LabelSpacing",350,'Linestyle',':');
-clabel(C,h,[-3000:500:-2000 -1000],'color',labelColor+0.1)
-% contourf(ax1,xtopo,ytopo,ztopo',v,'ShowText','off',"FaceAlpha",0.9,"LineStyle",":","LabelSpacing",350);
-colormap(ax1,flipud(cmocean('deep')))
-% cb1 = colorbar(ax1,"east",'Color','w');
-% cb1.Limits = [-3500 0];
-% cb1.Label.String = "Bathymetry Elevation (m)";
+ax1 = gca; %axes('Position',axesPosition);
+% % v = -3500:100:0;
+% % labelColor = [1 1 1]*0.25;
+% % [C,h] = contourf(ax1,xtopo,ytopo,ztopo',v,'color',labelColor,'ShowText','off',"FaceAlpha",0.5,"LabelSpacing",350,'Linestyle',':');
+% % clabel(C,h,[-3000:500:-2000 -1000],'color',labelColor+0.1)
+% % % contourf(ax1,xtopo,ytopo,ztopo',v,'ShowText','off',"FaceAlpha",0.9,"LineStyle",":","LabelSpacing",350);
+% % colormap(ax1,flipud(cmocean('deep')))
+% % % cb1 = colorbar(ax1,"east",'Color','w');
+% % % cb1.Limits = [-3500 0];
+% % cb1.Label.String = "Bathymetry Elevation (m)";
+[ax1,C,h]=getMeGenericMap(gca,xtopo,ytopo,ztopo',[-4000:100:0],[-3000:1000:-1000],[-4000 0],0.75);
 hold on
-
-% xlabel(ax1,'Longitude E')
-% ylabel(ax1,'Latitude N')
-daspect(ax1,[1 1 1])
+colormap(ax1,flipud(cmocean('deep')))
+colormap(ax1,cmocean('topo'))
+clim(ax1,[-1 1]*4000)
+ax1.Visible="on";
+xlabel(ax1,'Longitude E')
+ylabel(ax1,'Latitude N')
+% daspect(ax1,[1 1 1])
 axis(ax1,mapLims);
 hold off
 
 ax2 = axes('Position',axesPosition);
 
 hold on
-howManyDrawn = 0
-for ii = 1:length(filePath)
+howManyDrawn = 0;
+clear startPosition
+for ii = length(filePath):-1:1
     fileName = (filePath(ii).name);
     load(fileName)
-
-    if startT < 30 && startLAM ~= 0  && startLat ~= 0 && startLon ~= 0 && dt_hr ~= 0 && days ~= 0
+    % if startLat == 27.2
+    %     'ok'
+    % end
+    if round(startT,2) ~= 0 && round(startLAM,2) ~= 0  && round(startLat,2) ~= 0 && round(startLon,2) ~= 0 && dt_hr ~= 0 && days ~= 0
+        startPosition(ii) = startLon + 1i*startLat;
         colorIndex = zeros([length(pathLon) 3]);
-        if choice == 1
-            colorIndex = (0.002*pi./pathK0);
-        elseif choice == 2
-            colorIndex = ((timeHr/24));
-        elseif choice == 3
-            [colorIndex,~,~,~,~] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
-        elseif choice == 4
-            colorIndex = -pathEi(:,1);
-        elseif choice == 5
-            colorIndex = sqrt(pathEi(:,2).^2+pathEi(:,3).^2);
-        elseif choice == 6
-            colorIndex = startT*ones(size(pathLon));
-        elseif choice == 7
-            [~,~,~,~,reSig] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
-            colorIndex = 2*pi./reSig./86400 - startT;
-        elseif choice == 8
-            colorIndex = [diff(pathEi(:,1)); 0] / dt_hr;
+        switch choice
+            case 1
+                colorIndex = (0.002*pi./pathK0);
+            case 2
+                colorIndex = ((timeHr/24));
+            case 3
+                [colorIndex,~,~,~,~] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
+            case 4
+                colorIndex = -pathEi(:,1);
+            case 5
+                colorIndex = sqrt(pathEi(:,2).^2+pathEi(:,3).^2);
+            case 6
+                colorIndex = startT*ones(size(pathLon));
+            case 7
+                [~,~,~,~,reSig] = getMeGroupVelocities(startT,pathK,pathL,pathEi);
+                colorIndex = 2*pi./reSig./86400 - startT;
+            case 8
+                colorIndex = [0; diff(pathEi(:,1))] / dt_hr;
+            case 9
+                colorIndex = (0.002*pi./pathK0) ./ startLAM;
+            case 10
+                colorIndex = (0.002*pi./pathK);
+            case 11
+                colorIndex = (0.002*pi./pathL);
+            case 12
+                colorIndex = pathK.*pathEi(:,3) - pathL.*pathEi(:,2);
+            case 13
+                colorIndex = asin((pathK.*pathEi(:,3) - pathL.*pathEi(:,2)) ./ sqrt(pathEi(:,2).^2+pathEi(:,3).^2) ./ pathK0) ;
+
         end
         cb2 = colorbar(ax2,'east','Color','k');
         clim(ax2,[loClim hiClim])
-        if choice == 1
-            cb2.Label.String = "Wavelength (km)";
-        elseif choice == 2
-            cb2.Label.String = "Time Elapsed (day)";
-        elseif choice == 3
-            cb2.Label.String = "Group Velocity (m/s)";
-        elseif choice == 4
-            cb2.Label.String = "Depth z=-h (m)";
-        elseif choice == 5
-            cb2.Label.String = "∇h (m/m)";
-        elseif choice == 6
-            cb2.Label.String = "Wave Period T (day)";
-        elseif choice == 7
-            cb2.Label.String = "Simulation period discrepancy (day)";
-        elseif choice == 8
-            cb2.Label.String = "dh/dt (m/h)";
+        switch choice
+            case 1
+                cb2.Label.String = "Wavelength (km)";
+            case 2
+                cb2.Label.String = "Time Elapsed (day)";
+            case 3
+                cb2.Label.String = "Group Velocity (m/s)";
+            case 4
+                cb2.Label.String = "Depth z=-h (m)";
+            case 5
+                cb2.Label.String = "∇h (m/m)";
+            case 6
+                cb2.Label.String = "Wave Period T (day)";
+            case 7
+                cb2.Label.String = "Simulation period discrepancy (day)";
+            case 8
+                cb2.Label.String = "dh/dt (m/h)";
+            case 9
+                cb2.Label.String = "\lambda/\lambda_0";
+                set(ax2,'ColorScale','log')
+            case 10
+                cb2.Label.String = "\lambda_x (km)";
+            case 11
+                cb2.Label.String = "\lambda_y (km)";
+            case 12
+                cb2.Label.String = "KX\nablah";
+            case 13
+                cb2.Ticks = [0:0.25:1]*pi/2;
+                cb2.TickLabels = {'0','\pi/8','\pi/4','3\pi/8','\pi/2'};
+                cb2.Label.String = "Wave angle \theta wrt Topography";
         end
         pathScatter = scatter(ax2,pathLon,pathLat,15,colorIndex);
-        howManyDrawn = howManyDrawn + 1
+        howManyDrawn = howManyDrawn + 1;
+        disp(howManyDrawn)
     else
     end
 end
@@ -120,7 +187,8 @@ end
 % b = scatter(ax2,lonListP(2*(1:4)), latListP(2*(1:4)),'markeredgecolor','k','markerfacecolor','y');
 % scatter(ax2,-90.1, 26,'markeredgecolor','y')
 % c = scatter(ax2,[-89.98 -90.5],[27.23 26.75],'markerfacecolor','#fc03c6','markeredgecolor','k');
-
+startPosition = unique(startPosition);
+scatter(ax2,real(startPosition),imag(startPosition),10,'markerfacecolor','y','LineWidth',1,'MarkerEdgeColor','k')
 ax2.Visible = 'off';
 axis(ax2,mapLims);
 daspect(ax2,[1 1 1])

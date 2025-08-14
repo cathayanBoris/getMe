@@ -1,8 +1,9 @@
-function ellipseComplex = getMeEllipse(axis1,axis2,tiltRad)
+function ellipseComplex = getMeEllipse(axisX,axisY,tiltRadian)
+% to use: plot(real,imag)
 
 t=-pi:0.01:pi;
-x=axis1*cos(t);
-y=axis2*sin(t);
-ellipseComplex = (x+1i*y)*exp(1i*tiltRad);
+x=axisX*cos(t);
+y=axisY*sin(t);
+ellipseComplex = (x+1i*y)*exp(1i*tiltRadian);
 
 end

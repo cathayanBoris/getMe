@@ -4,6 +4,7 @@ function [ax,C,h] = getMeGenericContours(position,longitude,latitude,altitude,in
 switch length(position)
     case 1 % position is an axis
         ax = axes("Position",get(position,'Position'));  % postision = axes
+        ax.ALim = get(position,'ALim');
     case 4
         ax = axes("Position",position); % position = coordinates
     otherwise
@@ -23,5 +24,5 @@ else % labels are provided
     clabel(C,h,labels,'Color',[1 1 1]*0.5) 
 end 
 
-set(ax,'Color','none','Visible','off')
+set(ax,'Color','w','Visible','off')
 end
