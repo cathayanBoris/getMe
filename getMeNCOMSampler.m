@@ -16,6 +16,7 @@ request = [(7:8)*16+1 (6:8)*16+2 (5:8)*16+3 (3:8)*16+4 (2:8)*16+5 (2:8)*16+6 (1:
 requestLon = requestLon(request);
 requestLat = requestLat(request);
 
+clear lengthLonSpan lengthLatSpan lls request
 % daratio = [1 1 1];
 
 % can be visualized ny:

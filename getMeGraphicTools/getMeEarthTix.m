@@ -1,8 +1,11 @@
 function getMeEarthTix(ax)
 % Note: this feature loses the precision when zoomed in
 % use this function after finished developing the map
-xt = xticks(ax);
 
+% xl = get(ax,'XLim'); yl = get(ax,'YLim');
+% axis(ax,[xl yl])
+
+xt = xticks(ax);
 for ii = 1:length(xt)
     if xt(ii) > 0
         out(ii) = compose('%G\\circE',abs(xt(ii)));
@@ -12,10 +15,10 @@ for ii = 1:length(xt)
         out(ii) = compose('%G\\circ',abs(xt(ii)));
     end
 end
-    set(ax,'xtickLabel',out);
+set(ax,'xtickLabel',out);
 
-    yt = yticks(ax);
-
+clear out
+yt = yticks(ax);
 for ii = 1:length(yt)
     if yt(ii) > 0
         out(ii) = compose('%G\\circN',abs(yt(ii)));
@@ -25,6 +28,7 @@ for ii = 1:length(yt)
         out(ii) = compose('%G\\circ',abs(yt(ii)));
     end
 end
-    set(ax,'ytickLabel',out);
-
+set(ax,'ytickLabel',out);
+ax.XTickMode = 'manual';
+ax.YTickMode = 'manual';
 end

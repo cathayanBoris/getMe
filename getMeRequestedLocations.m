@@ -34,9 +34,9 @@ mapLims = [-91.4 -87.6 25.9 27.7];
 axis(ax1,mapLims);
 
 hold on
-scatter(ax1,requestLon,requestLat,150,'markerfacecolor','y','LineWidth',3,'MarkerEdgeColor','g')
+sc = scatter(ax1,requestLon,requestLat,150,'markerfacecolor','y','LineWidth',3,'MarkerEdgeColor','none');
 for tt = 1:length(requestLon)
-    text(ax1,requestLon(tt),requestLat(tt),num2str(tt),"HorizontalAlignment","center",'VerticalAlignment','middle','FontWeight','bold')
+   text(ax1,requestLon(tt),requestLat(tt),num2str(tt),"HorizontalAlignment","center",'VerticalAlignment','middle','FontWeight','bold');
 end
 ax1.Visible = 'on';
 getMeEarthTix(ax1)

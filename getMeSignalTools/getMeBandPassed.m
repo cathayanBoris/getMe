@@ -16,7 +16,7 @@ function [outputSignal]=getMeBandPassed(inputSignal,order,periodBand,samplingPer
 %  NOTE:  filtT and sampT must be entered in the same units!!!!!
 %
 
-if nargin <= 4 || ~exist('linearRestoration','var')
+if nargin <= 4 || ~exist('linearRestoration','var') || isempty(linearRestoration)
     linearRestoration = 0;
 end
 

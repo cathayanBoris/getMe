@@ -10,10 +10,11 @@ clear colorIndex
 switch choice
     case 1 % Wavelength
         hiClim = 300;
-        cMap = cmocean('thermal');
+        cMap = (parula);
     case 2 % Time span
         hiClim = howManyDaysToSee;
         cMap = prism(hiClim);
+        cMap = getMeRandomColors(hiClim);
     case 3 % Cg
         hiClim = 0.5;
         cMap = hot;
@@ -25,14 +26,14 @@ switch choice
         hiClim = 0.05;
         cMap = cmocean('algae');
     case 6 % T
-        loClim = 8;
-        hiClim = 30;
-        cMap = turbo(hiClim-loClim);
+        loClim = 10.5;
+        hiClim = 22.5;
+        cMap = jet(hiClim-loClim);
     case 7 % T reconstruction
         loClim = -10;
         hiClim = -loClim;;
         % cMap = cmocean('diff',20);
-        cMap = getMeDivergeColors([0 0 255],[235 235 255],[255 235 235],[255 0 0],10);
+        cMap = getMeDivergeColors([0 0 255],[235 235 255],[255 235 235],[255 0 0],20);
     case 8 % dh/dt
         hiClim = 10;
         hiClim = -loClim;
@@ -68,32 +69,24 @@ end
 
 
 %%
-filePath = dir("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\TRW\rayTracing\backward\experimentSW\SW1\*.mat");
+filePath = dir("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\TRW\rayTracing\forward\experimentSE\SE4\*.mat");
 
+% filePath = dir("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\TRW\rayTracing\forward\experimentSE\SE4\18D200KM-89E26.4N0.125HdT5.224day30KMsmooth.mat");
+% filePath = dir("C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\TRW\rayTracing\forward\experimentSE\SE8\*.mat")
 
+fs = 20;
 figure(10)
 clf
 mapLims = [-91.4 -87.6 25.9 27.7];
 axesPosition = get(gca,'Position');
 set(gca,'visible','off')
-ax1 = gca; %axes('Position',axesPosition);
-% % v = -3500:100:0;
-% % labelColor = [1 1 1]*0.25;
-% % [C,h] = contourf(ax1,xtopo,ytopo,ztopo',v,'color',labelColor,'ShowText','off',"FaceAlpha",0.5,"LabelSpacing",350,'Linestyle',':');
-% % clabel(C,h,[-3000:500:-2000 -1000],'color',labelColor+0.1)
-% % % contourf(ax1,xtopo,ytopo,ztopo',v,'ShowText','off',"FaceAlpha",0.9,"LineStyle",":","LabelSpacing",350);
-% % colormap(ax1,flipud(cmocean('deep')))
-% % % cb1 = colorbar(ax1,"east",'Color','w');
-% % % cb1.Limits = [-3500 0];
-% % cb1.Label.String = "Bathymetry Elevation (m)";
-[ax1,C,h]=getMeGenericMap(gca,xtopo,ytopo,ztopo',[-4000:100:0],[-3000:1000:-1000],[-4000 0],0.75);
+[ax1,C,h]=getMeGenericMap(gca,xtopo,ytopo,ztopo',[-4000:100:0],[-3000:1000:-1000],[-4000 0],0.5);
 hold on
-colormap(ax1,flipud(cmocean('deep')))
 colormap(ax1,cmocean('topo'))
 clim(ax1,[-1 1]*4000)
 ax1.Visible="on";
-xlabel(ax1,'Longitude E')
-ylabel(ax1,'Latitude N')
+% xlabel(ax1,'Longitude E')
+% ylabel(ax1,'Latitude N')
 % daspect(ax1,[1 1 1])
 axis(ax1,mapLims);
 hold off
@@ -109,7 +102,7 @@ for ii = length(filePath):-1:1
     % if startLat == 27.2
     %     'ok'
     % end
-    if round(startT,2) ~= 0 && round(startLAM,2) ~= 0  && round(startLat,2) ~= 0 && round(startLon,2) ~= 0 && dt_hr ~= 0 && days ~= 0
+    if round(startT,2) ~= 0 && round(startLAM,2) == 200  && round(startLat,2) ~= 0 && round(startLon,2) ~= 0 && dt_hr ~= 0 && days ~= 0
         startPosition(ii) = startLon + 1i*startLat;
         colorIndex = zeros([length(pathLon) 3]);
         switch choice
@@ -189,13 +182,23 @@ end
 % c = scatter(ax2,[-89.98 -90.5],[27.23 26.75],'markerfacecolor','#fc03c6','markeredgecolor','k');
 startPosition = unique(startPosition);
 scatter(ax2,real(startPosition),imag(startPosition),10,'markerfacecolor','y','LineWidth',1,'MarkerEdgeColor','k')
-ax2.Visible = 'off';
 axis(ax2,mapLims);
-daspect(ax2,[1 1 1])
+% daspect(ax2,[1 1 1])
 colormap(ax2,cMap)
-linkaxes([ax1 ax2]);
+xticks(ax1,unique(getMeRounded(xtopo,0.5)));
+yticks(ax1,unique(getMeRounded(ytopo,0.5)));
+axes(ax1); getMeSimpleMercator([mapLims(3) mapLims(4)]);
+axes(ax2); getMeSimpleMercator([mapLims(3) mapLims(4)]);
+% linkaxes([ax1 ax2]);
 ax2.Visible = 'off';
+ax1.FontSize = fs;
+cb2.FontSize = fs;
 getMeEarthTix(ax1);
+
 
 % startMarks = scatter(ax1,pathLon(1),pathLat(1),10,'o','filled','MarkerEdgeColor',"black","MarkerFaceColor","yellow");
 % pathMarks = scatter(ax1,pathLon(everyDayMarks),pathLat(everyDayMarks),10,'o','MarkerEdgeColor',"black");
+
+
+% exportgraphics(figure(10),'rayTracings200.png')
+% exportgraphics(figure(10),'rayTracings200.pdf','ContentType','vector')

@@ -58,6 +58,19 @@ if mode(2:4) == 'ari'  % largest variance
     end
 end
 
+if mode(2:4) == 'iff' % largest span
+    steve = 0;
+    radianAppliedToWin = [];
+    for theta = -pi/2:pi/division:pi/2  %0.05 interval
+        rotationAttempt = complexTS(:,:).*exp(1i*theta);
+        if max(real(rotationAttempt)) - min(real(rotationAttempt))>steve
+            steve = max(real(rotationAttempt)) - min(real(rotationAttempt));
+            radianAppliedToWin=theta;
+        elseif max(real(rotationAttempt)) - min(real(rotationAttempt))==steve
+            radianAppliedToWin=[radianAppliedToWin theta];
+        end
+    end
+end
 % if mode(2:4) == 'ati'  % largest variance ratio
 %     stever = 1;
 %     radianAppliedToWin = 0;
@@ -93,15 +106,18 @@ end
 reorientedComplexTSOutput = complexTS .* exp(1i * radianAppliedToWin);
 if ~exist("minorVariance",'var')
     if mode(2:4) == 'ari'
-    major = std(real(reorientedComplexTSOutput),'omitmissing');
-    minor = std(imag(reorientedComplexTSOutput),'omitmissing');
-    % ratio = std(real(reorientedComplexTSOutput),'omitmissing')/std(imag(reorientedComplexTSOutput),'omitmissing');
+        major = std(real(reorientedComplexTSOutput),'omitmissing');
+        minor = std(imag(reorientedComplexTSOutput),'omitmissing');
+        % ratio = std(real(reorientedComplexTSOutput),'omitmissing')/std(imag(reorientedComplexTSOutput),'omitmissing');
     end
     if mode(2:4) == 'ean' % mean flow
-    major = mean(real(reorientedComplexTSOutput),'omitmissing');
-    minor = nan;
-end
-    
-    ratio = major./minor';
+        major = abs(mean((reorientedComplexTSOutput),'omitmissing'));
+        minor = nan;
+    end
+    if mode(2:4) == 'iff'
+        major = max(real(rotationAttempt)) - min(real(rotationAttempt));
+        minor = max(imag(rotationAttempt)) - min(imag(rotationAttempt));
+    end
+        ratio = major./minor';
 end
 end
