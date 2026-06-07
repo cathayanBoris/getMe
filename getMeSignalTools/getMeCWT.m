@@ -40,7 +40,7 @@ subplot(n,1,2)
 getMePcolor(timeInDays,(1./f)/86400,abs(wt1));
 hold on
 % plot(timeInDays,1./coi/86400,'k--','linewidth',2);
-yL = get(gca,'YLim');
+
 area(timeInDays,1./coi/86400,1./min(f)/86400,'EdgeColor','k','lineWidth',2,'LineStyle','--','FaceColor',[1 1 1]*0.5,'FaceAlpha',0.5)
 set(gca, 'YScale', 'log')
 xlim([min(timeInDays) max(timeInDays)])

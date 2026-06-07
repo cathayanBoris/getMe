@@ -1,7 +1,7 @@
 % getMeNCOMsampler
-lonSpan = -91:0.2:-88;
+lonSpan = -91:0.1:-88;
 lengthLonSpan = length(lonSpan);
-latSpan = 27.6:-0.2:26;
+latSpan = 27.6:-0.1:26;
 lengthLatSpan = length(latSpan);
 requestLon = repmat(lonSpan,1,lengthLatSpan);
 requestLat = [];
@@ -9,9 +9,12 @@ for lls = 1:lengthLatSpan
     requestLat = [requestLat repmat(latSpan(lls),1,lengthLonSpan)];
 end
 %
-request = [(7:8)*16+1 (6:8)*16+2 (5:8)*16+3 (3:8)*16+4 (2:8)*16+5 (2:8)*16+6 (1:8)*16+7 ...
-    (1:8)*16+8 (0:8)*16+9 (0:8)*16+10 (0:8)*16+11 (0:8)*16+12 (0:8)*16+13 (0:8)*16+14 ...
-    (0:8)*16+15 (0:8)*16+16];
+% request = [(7:8)*16+1 (6:8)*16+2 (5:8)*16+3 (3:8)*16+4 (2:8)*16+5 (2:8)*16+6 (1:8)*16+7 ...
+%     (1:8)*16+8 (0:8)*16+9 (0:8)*16+10 (0:8)*16+11 (0:8)*16+12 (0:8)*16+13 (0:8)*16+14 ...
+%     (0:8)*16+15 (0:8)*16+16];
+
+request = [15:31 44:62 74:93 105:124 133:155 162:186 192:217 223:248 254:279 284:310 314:341 ...
+    344:372 374:403 405:527];
 
 requestLon = requestLon(request);
 requestLat = requestLat(request);

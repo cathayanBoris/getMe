@@ -1,5 +1,7 @@
 function factor = getMeAxisRatio(xlimits,ylimits)
 % use as a factor to stretch x-dir * factor or y-dir ./ factor
+% if use in the same plot, make sure to use all in the same fashion
+
 if nargin < 1 || isempty(xlimits)
     xlimits = get(gca,'XLim');
     ylimits = get(gca,'YLim');

@@ -1,4 +1,4 @@
-function [circlePlot] = getMeCirclePlot(xorigin,yorigin,radius,lineWidth,lineStyle,alpha,colorIndex)
+function [circlePlot] = getMeCirclePlot(xorigin,yorigin,radius,lineWidth,lineStyle,alpha,colorIndex,ifAdjust)
 % for x-y plane use only so far
 % for some reason MATLAB is unable to display legends properly if linewidth
 % > 1.9 and not being solid line in surf() or surface() functions
@@ -31,30 +31,53 @@ if ~exist('colorIndex','var') || isempty(colorIndex)
     colorIndex = [0 0 0];
 end
 
+if ~exist('ifAdjust','var') || isempty(ifAdjust)
+    ifAdjust = 0;
+end
 
+if ifAdjust == 0
+    if isa(colorIndex,'char') || isa(colorIndex,'string') || length(colorIndex) == 3
+        % alpha seems not working in this case
 
-circlePlot = plot([1 2 3],[3 5 7]);
-
-if isa(colorIndex,'char') || isa(colorIndex,'string') || length(colorIndex) == 3
-    % alpha seems not working in this case
-
-    a = plot(gca,xcirc+xorigin,ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
-    hold(gca,"on")
-    b = plot(gca,-xcirc+xorigin,ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
-    c = plot(gca,xcirc+xorigin,-ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
-    d = plot(gca,-xcirc+xorigin,-ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
-else
-    if isscalar(colorIndex)
-        colorIndex = colorIndex.*ones(size(ang));
+        a = plot(gca,xcirc+xorigin,ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+        hold(gca,"on")
+        b = plot(gca,-xcirc+xorigin,ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+        c = plot(gca,xcirc+xorigin,-ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+        d = plot(gca,-xcirc+xorigin,-ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+    else
+        if isscalar(colorIndex)
+            colorIndex = colorIndex.*ones(size(ang));
+        end
+        a = getMeColorfulPlot(xcirc+xorigin,ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+        hold(gca,"on")
+        b = getMeColorfulPlot(-xcirc+xorigin,ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+        c = getMeColorfulPlot(xcirc+xorigin,-ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+        d = getMeColorfulPlot(-xcirc+xorigin,-ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
     end
-    a = getMeColorfulPlot(xcirc+xorigin,ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
-    hold(gca,"on")
-    b = getMeColorfulPlot(-xcirc+xorigin,ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
-    c = getMeColorfulPlot(xcirc+xorigin,-ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
-    d = getMeColorfulPlot(-xcirc+xorigin,-ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+
+elseif ifAdjust == 1
+    yRatio = getMeAxisRatio;
+    xcirc = xcirc*yRatio;
+    if isa(colorIndex,'char') || isa(colorIndex,'string') || length(colorIndex) == 3
+        % alpha seems not working in this case
+
+        a = plot(gca,xcirc+xorigin,ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+        hold(gca,"on")
+        b = plot(gca,-xcirc+xorigin,ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+        c = plot(gca,xcirc+xorigin,-ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+        d = plot(gca,-xcirc+xorigin,-ycirc+yorigin,'LineWidth',lineWidth,'LineStyle',lineStyle,'Color',colorIndex);
+    else
+        if isscalar(colorIndex)
+            colorIndex = colorIndex.*ones(size(ang));
+        end
+        a = getMeColorfulPlot(xcirc+xorigin,ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+        hold(gca,"on")
+        b = getMeColorfulPlot(-xcirc+xorigin,ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+        c = getMeColorfulPlot(xcirc+xorigin,-ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+        d = getMeColorfulPlot(-xcirc+xorigin,-ycirc+yorigin,colorIndex,lineWidth,lineStyle,alpha);
+    end
+
 end
 circlePlot = [a b c d];
-
-
 hold(gca,"off")
 end

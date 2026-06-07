@@ -8,7 +8,6 @@ c = (1-abs(2*l-1))*s;
 hh = h./60;
 x = c.*(1 - abs(mod(hh,2)-1));
 m = l-c/2;
-
 switch floor(hh)
     case 0
         rrggbb = [c x 0];
@@ -22,6 +21,8 @@ switch floor(hh)
         rrggbb = [x 0 c];
     case 5
         rrggbb = [c 0 x];
+    case 6
+        rrggbb = [c x 0];
 end
 
 rgb = (rrggbb + m) * (255);

@@ -7,13 +7,14 @@ end
 % # of total steps = nColor x nStep
 thisLevel = zeros(nColor*nStep,3);
 for level = 1:nColor
-    a = 50;
+    a = 5;
     b = 250;
 
     hiColors = (a + (b-a).*rand(1,3)) + 30*rand(1,3);
     hiColors = hiColors + 1/3*(255 - hiColors);
     hiColors(hiColors>=255) = 255;
-    loColors = round(hiColors / 5);
+    hiColors = getMeSaturated(hiColors,1,0.9);
+    loColors = getMeSaturated(hiColors,1,0.1);
 
     for cc = 1:3
         thisLevel([1:nStep]+(level-1)*nStep,cc) = linspace(loColors(cc),hiColors(cc),nStep);

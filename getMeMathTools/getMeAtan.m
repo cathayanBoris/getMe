@@ -8,25 +8,27 @@ elseif nargin == 4 && ~isempty(x0) && ~isempty(y0)
     y = y-y0;
 end
 
-for ii = 1:length(x)
-    if x(ii) == 0
-        if y > 0
-            angleInRadian(ii) = pi/2;
-        elseif y < 0
-            angleInRadian(ii) = -pi/2;
+for ii = 1:length(x(:,1))
+    for jj = 1:length(x(1,:))
+    if x(ii,jj) == 0
+        if y(ii,jj) > 0
+            angleInRadian(ii,jj) = pi/2;
+        elseif y(ii,jj) < 0
+            angleInRadian(ii,jj) = -pi/2;
         else
-            angleInRadian(ii) = [nan];
+            angleInRadian(ii,jj) = [nan];
         end
     else
-        angleInRadian(ii) = atan(y(ii)./x(ii));
-        if x(ii) < 0 && y(ii) > 0
-            angleInRadian(ii) = angleInRadian(ii) + pi;
-        elseif x(ii) < 0 && y(ii) < 0
-            angleInRadian(ii) = angleInRadian(ii) + pi;
-        elseif x(ii) > 0 && y(ii) < 0
-            angleInRadian(ii) = angleInRadian(ii) + pi*2;
+        angleInRadian(ii,jj) = atan(y(ii,jj)./x(ii,jj));
+        if x(ii,jj) < 0 && y(ii,jj) > 0
+            angleInRadian(ii,jj) = angleInRadian(ii,jj) + pi;
+        elseif x(ii,jj) < 0 && y(ii,jj) < 0
+            angleInRadian(ii,jj) = angleInRadian(ii,jj) + pi;
+        elseif x(ii,jj) > 0 && y(ii,jj) < 0
+            angleInRadian(ii,jj) = angleInRadian(ii,jj) + pi*2;
         end
     end
+    end 
 end
 
 angleInRadian(angleInRadian>=pi) = angleInRadian(angleInRadian>=pi) - 2*pi;

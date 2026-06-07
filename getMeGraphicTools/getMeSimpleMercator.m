@@ -1,5 +1,9 @@
 function yRatio = getMeSimpleMercator(ylim)
-yRatio = cosd(mean(ylim));
+try
+    yRatio = cosd(mean(ylim));
+catch
+    yRatio = cosd(mean(get(gca,'YLim')));
+end
 daspect([1 yRatio 1]);
 % L = xlim(1);
 % R = xlim(2);

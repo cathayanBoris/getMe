@@ -3,11 +3,11 @@ function [gulfNsfc,gulfNavg] = getMeGulfN(belowThis)
 qualification = [{'A2'},{'B1'}];
 for h = 1:2 % number of CTD cruises
     if h == 1
-        A = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\CTD\CTD20\*.nc');
-        fileDir = 'C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\CTD\CTD20\';
+        A = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\CTD\CTD20\*.nc');
+        fileDir = 'C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\CTD\CTD20\';
     elseif h == 2
-        A = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\CTD\CTD21\*.nc');
-        fileDir = 'C:\Users\Yan_J\OneDrive\Documents\MATLAB\GoM\CTD\CTD21\';
+        A = dir('C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\CTD\CTD21\*.nc');
+        fileDir = 'C:\Users\Yan_J\OneDrive\Documents\MATLAB\GULL&NCOM\CTD\CTD21\';
     end
     for i = 1:length(A)
         fileName(i) = convertCharsToStrings(A(i).name);

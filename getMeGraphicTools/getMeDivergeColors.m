@@ -2,7 +2,7 @@ function showSomeColors = getMeDivergeColors(rgbStart,rgbEnd,rgbStart2,rgbEnd2,n
 % if n is odd, end1 and start2 must be the same
 % https://www.rapidtables.com/web/color/RGB_Color.html
 
-if nargin <= 4 || n == 0 || isempty(n)
+if nargin <= 4  || isempty(n) || n == 0
     n = 256;
 end
 
